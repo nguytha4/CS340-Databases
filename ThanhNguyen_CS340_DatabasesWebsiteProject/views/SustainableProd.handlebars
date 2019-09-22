@@ -1,0 +1,86 @@
+<!-- Navbar created with the help of templates found on https://bootswatch.com/ -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="http://flip3.engr.oregonstate.edu:24505">Sustainable Technology Database</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="http://flip3.engr.oregonstate.edu:24505/EnergySource">1. Energy Sources <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="http://flip3.engr.oregonstate.edu:24505/EnergyTech">2. Energy Technology <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="http://flip3.engr.oregonstate.edu:24505/SustainableProd">3. Sustainability Products <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="http://flip3.engr.oregonstate.edu:24505/Company">4. Companies <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="http://flip3.engr.oregonstate.edu:24505/Region">5. Regions <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<br></br>
+
+<!--handlebars code for iterating over a table and automatically displaying column names and
+associated data adapted from jddevight's jsfiddle at:
+https://jsfiddle.net/jddevight/v96tka9p/-->
+
+<div class="table-responsive">
+    <h1>Sustainability Products</h1>
+     <table class="table">
+         <thead>
+             {{#each array.[0]}}
+               <th>{{@key}}</th>
+             {{/each}}
+             <th></th>
+         </thead>
+         <tbody>
+             {{#each array}}
+                 <tr>
+                     {{#each this}}
+                         <td>{{this}}</td>
+                     {{/each}}
+                     <td>
+                         <form action="http://flip3.engr.oregonstate.edu:24505/SustainableProd" method="POST">
+                             <input type="hidden" name="type" value="addRelComp">
+                             <input type="hidden" name="sp_id" value={{this.id}}>
+                             <input type="text" name="c_id" placeholder="Enter Company id">
+                             <input type="submit" class="btn btn-primary" value="Add Company">
+                         </form>
+                     </td>
+                 </tr>
+             {{/each}}
+         </tbody>
+    </table>
+</div>
+
+<hr style="border-width:2px; border-color:#DDDDDD";>
+
+<br>
+<div class="container">
+    {{relCompAdded}}
+</div>
+<br>
+<div class="container-fluid">
+    <h3>Add Sustainable Product</h3>
+    <form class="fillData" action="http://flip3.engr.oregonstate.edu:24505/SustainableProd" method="POST">
+        <input type="hidden" name="type" value="insert">
+        <label for="name">Name: </label>
+        <input id="name" type="text" name="name">
+        <label for="cpu">Cost/Unit: </label>
+        <input id="cpu" type="number" min="0" oninput="this.value = Math.abs(this.value)" name="cpu"> <!-- Code to prevent negative input written with help from: https://stackoverflow.com/questions/7372067/is-there-any-way-to-prevent-input-type-number-getting-negative-values -->
+        <label for="sec">Sector: </label>
+        <input id="sec" type="text" name="sec">
+        <input type="submit" class="btn btn-primary" value="Add data">
+    </form>
+</div>
+<div class="container">
+    {{badData}}
+</div>

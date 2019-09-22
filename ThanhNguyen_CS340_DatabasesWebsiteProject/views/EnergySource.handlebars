@@ -1,0 +1,111 @@
+<!-- Navbar created with the help of templates found on https://bootswatch.com/ -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="http://flip3.engr.oregonstate.edu:24505">Sustainable Technology Database</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="http://flip3.engr.oregonstate.edu:24505/EnergySource">1. Energy Sources <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="http://flip3.engr.oregonstate.edu:24505/EnergyTech">2. Energy Technology <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="http://flip3.engr.oregonstate.edu:24505/SustainableProd">3. Sustainability Products <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="http://flip3.engr.oregonstate.edu:24505/Company">4. Companies <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="http://flip3.engr.oregonstate.edu:24505/Region">5. Regions <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<br></br>
+
+<!--handlebars code for iterating over a table and automatically displaying column names and
+associated data adapted from jddevight's jsfiddle at:
+https://jsfiddle.net/jddevight/v96tka9p/-->
+
+<div class="table-responsive">
+    <h1>Energy Sources</h1>
+    <table class="table" >
+        <thead>
+            <tr>
+              {{#each array.[0]}}
+                <th>{{@key}}</th>
+              {{/each}}
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each array}}
+                <tr>
+                    {{#each this}}
+                        <td>{{this}}</td>
+                    {{/each}}
+                    <td>
+                        <form action="http://flip3.engr.oregonstate.edu:24505/EnergySource" method="POST">
+                            <input type="hidden" name="type" value="addRelReg">
+                            <input type="hidden" name="es_id" value={{this.id}}>
+                            <input type="text" name="r_id" placeholder="Enter Region id">
+                            <input type="submit" class="btn btn-primary" value="Add Region">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="http://flip3.engr.oregonstate.edu:24505/EnergySource" method="POST">
+                            <input type="hidden" name="type" value="addRelComp">
+                            <input type="hidden" name="es_id" value={{this.id}}>
+                            <input type="text" name="c_id" placeholder="Enter Company id">
+                            <input type="submit" class="btn btn-primary" value="Add Company">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="http://flip3.engr.oregonstate.edu:24505/EnergySource" method="POST">
+                            <input type="hidden" name="type" value="remRelReg">
+                            <input type="hidden" name="es_id" value={{this.id}}>
+                            <input type="text" name="r_id" placeholder="Enter Region id">
+                            <input type="submit" class="btn btn-danger" value="Remove Region">
+                        </form>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<hr style="border-width:2px; border-color:#DDDDDD";>
+
+<div class="container-fluid">
+    {{relRegAdded}}
+    {{relCompAdded}}
+    {{relRegDeleted}}
+</div>
+<br>
+<div class="container-fluid">
+    <h3>Add Energy Source</h3>
+    <form class="fillData" action="http://flip3.engr.oregonstate.edu:24505/EnergySource" method="POST">
+        <input type="hidden" name="type" value="insert">
+        <label for="name">Name: </label>
+        <input id="name" type="text" name="name">
+        <label for="pgp">Percent Global Power: </label>
+        <input id="pgp" type="number" min="0" oninput="this.value = Math.abs(this.value)" name="pgp"> <!-- Code to prevent negative input written with help from: https://stackoverflow.com/questions/7372067/is-there-any-way-to-prevent-input-type-number-getting-negative-values -->
+        <label for="ag">Annual Growth: </label>
+        <input id="ag" type="number" min="0" oninput="this.value = Math.abs(this.value)" name="ag"> <!-- Code to prevent negative input written with help from: https://stackoverflow.com/questions/7372067/is-there-any-way-to-prevent-input-type-number-getting-negative-values -->
+        <label for="ckWh">Cost/kWh: </label>
+        <input id="ckWh" type="number" name="ckWh">
+        <input type="submit" class="btn btn-primary" value="Add data">
+    </form>
+    <br></br>
+</div>
+<br>
+<div class="container">
+    {{badData}}
+</div>

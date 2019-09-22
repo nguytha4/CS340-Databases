@@ -1,0 +1,32 @@
+<div class="table-responsive">
+    <h1>Update Company Record</h1>
+    <table class="table">
+        <tbody>
+            {{#each array}}
+                <tr>
+                    <div class="container-fluid">
+                        <form class="fillData" action="http://flip3.engr.oregonstate.edu:24505/Company" method="POST">
+                            <input type="hidden" name="type" value="update">
+                            <input type="hidden" name="c_id" value={{this.id}}>
+                            <label for="name">Name: </label>
+                            <input id="name" type="text" name="name" placeholder={{this.name}}>
+                            <label for="ar">Annual Revenue: </label>
+                            <input id="ar" type="number" name="ar" placeholder={{this.annual_revenue}}>
+                            <label for="ag">Annual Growth: </label>
+                            <input id="ag" type="number" name="ag" placeholder={{this.annual_growth}}>
+                            <input type="submit" class="btn btn-primary" value="Add data">
+                        </form>
+                    </div>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<hr style="border-width:2px; border-color:#DDDDDD";>
+
+<br>
+<br>
+<div class="container">
+    {{badData}}
+</div>
